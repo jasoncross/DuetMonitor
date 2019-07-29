@@ -1,8 +1,8 @@
-FROM ubuntu:18.04
+FROM python:3
 
 MAINTAINER JasonX <jason@jasoncross.com>
 
-RUN apt-get update && apt-get install -y sudo && apt-get install -y python && rm -rf /var/lib/apt/lists/*
+ADD duetmonitor.py /
 
 ENV DUET_HOSTNAME            duet.local
 ENV DUET_PASSWORD            reprap
@@ -16,10 +16,4 @@ ENV SNAPSHOT_URL        http://hevocam/picture/1/current/
 ENV ENERGY_URL          http://openhabianpi:8080/rest/items/Power_1_Counter/state
 ENV STAT_FILE           /home/pi/bin/statistic.csv
 
-COPY duetmonitor.py ~/bin/
-COPY duetmonitor.cfg ~/.duetmonitor.cfg
-COPY duetmonitor.service /lib/systemd/system/
-
-CMD chmod u+x ~/bin/duetmonitor.py
-CMD sudo chmod 644 /lib/systemd/system/duetmonitor.service
-CMD python ~/bin/duetmonitor.py
+CMD [ "python", "./duetmonitor.py" ]
