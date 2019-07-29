@@ -22,6 +22,4 @@ COPY duetmonitor.service /lib/systemd/system/
 
 CMD chmod u+x ~/bin/duetmonitor.py
 CMD sudo chmod 644 /lib/systemd/system/duetmonitor.service
-CMD sudo systemctl daemon-reload
-CMD sudo systemctl enable duetmonitor.service
-CMD sudo systemctl start duetmonitor.service
+CMD python3 ~/bin/duetmonitor.py
