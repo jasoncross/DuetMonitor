@@ -33,8 +33,8 @@ def main(argv):
         try:
             reloadConfig()
 
-            hostname = config.get('main', 'hostname')
-            reprap_pass = config.get('main', 'password')
+            hostname = os.environ['DUET_HOSTNAME']
+            reprap_pass = os.environ['DUET_PASSWORD']
 
             requests.get('http://' + hostname + '/rr_connect?password=' + reprap_pass + '&time=' + datetime.datetime.now().strftime('%Y-%m-%dT%H:%M:%S'))
             status = json.loads(requests.get('http://' + hostname + '/rr_status?type=1').text)['status']
@@ -71,8 +71,8 @@ def main(argv):
                     message += '\nEnergy used: {:.2f}Wh'.format(energy_use)
 
                 r = requests.post("https://api.pushover.net/1/messages.json", data = {
-                    "token": config.get('pushover', 'app_token'),
-                    "user": config.get('pushover', 'user'),
+                    "token": os.environ['PUSHOVER_APP_TOKEN'],
+                    "user": os.environ['PUSHOVER_USER'],
                     "message": message
                 },
                 files = files)
@@ -100,7 +100,7 @@ def main(argv):
 def getImage():
     files = None
     try:
-        img_data = requests.get(config.get('image', 'snapshot_url')).content
+        img_data = requests.get(os.environ['SNAPSHOT_URL']).content
         with open(printimage, 'wb') as handler:
             handler.write(img_data)
         files = {
@@ -124,40 +124,40 @@ def readCheckConfig():
 def checkConfig():
     valid = True
     # hostname must be set
-    if (config.get('main','hostname') is ''):
+    if (os.environ['DUET_HOSTNAME'] is ''):
         print ("Duet hostname is not set")
         valid = False
 
     # password must be set
-    if (config.get('main','password') is ''):
+    if (os.environ['DUET_PASSWORD'] is ''):
         print ("Duet password is not set")
         valid = False
 
     # pushover app_token must be set
-    if (config.get('pushover','app_token') is ''):
+    if (os.environ['PUSHOVER_APP_TOKEN'] is ''):
         print ("Pushover app_token is not set")
         valid = False
 
     # pushover user must be set
-    if (config.get('pushover','user') is ''):
+    if (os.environ['PUSHOVER_USER'] is ''):
         print ("Pushover user is not set")
         valid = False
 
     # check image settings
     if (useImage()):
-        if (config.get('image', 'snapshot_url') is ''):
+        if (os.environ['SNAPSHOT_URL'] is ''):
             print ("Images should be used but snapshot_url is not set")
             valid = False
 
     # check energy monitor settings
     if (useEnergyMonitor()):
-        if (config.get('energy_monitor', 'energy_url') is ''):
+        if (os.environ['ENERGY_URL'] is ''):
             print ("Energy monitor should be used but energy_url is not set")
             valid = False
 
     # check statistic settings
     if (writeStatistic()):
-        if (config.get('statistics', 'file') is ''):
+        if (os.environ['WRITE_STATISTIC'] is ''):
             print ("Statistics should be written but file is not set")
             valid = False
 
@@ -173,20 +173,20 @@ def reloadConfig():
     config.read(['duetmonitor.cfg', os.path.expanduser('~/.duetmonitor.cfg')])
 
 def useLightForImage():
-    return config.getboolean('main', 'use_image_light', fallback=False)
+    return os.environ['USE_IMAGE_LIGHT']
 
 def useImage():
-    return config.getboolean('main', 'send_image', fallback=False)
+    return os.environ['SEND_IMAGE']
 
 def useEnergyMonitor():
-    return config.getboolean('main', 'use_energy_monitor', fallback=False)
+    return os.environ['USE_ENERGY_MONITOR']
 
 def writeStatistic():
-    return config.getboolean('main', 'write_statistic', fallback=False)
+    return os.environ['WRITE_STATISTIC']
 
 def writeStatisticToFile(filename, start, end, duration, energy):
     print ("Write statistic to file called")
-    csv_file = config.get('statistics', 'file')
+    csv_file = os.environ['STAT_FILE']
     write_header = False
 
     if not os.path.isfile(csv_file):
@@ -207,7 +207,7 @@ def writeStatisticToFile(filename, start, end, duration, energy):
 
 def getCurrentEnergy():
     try:
-        return float(requests.get(config.get('energy_monitor', 'energy_url')).text)
+        return float(requests.get(os.environ['ENERGY_URL']).text)
     except Exception as ei:
         print ('Could not get current energy')
 
