@@ -169,7 +169,7 @@ def switchLight(value):
 
 def reloadConfig():
     global config
-    config = configparser.SafeConfigParser()
+    config = configparser.ConfigParser()
     config.read(['duetmonitor.cfg', os.path.expanduser('~/.duetmonitor.cfg')])
 
 def useLightForImage():
