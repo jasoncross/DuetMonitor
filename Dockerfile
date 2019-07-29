@@ -22,4 +22,4 @@ COPY duetmonitor.service /lib/systemd/system/
 
 CMD chmod u+x ~/bin/duetmonitor.py
 CMD sudo chmod 644 /lib/systemd/system/duetmonitor.service
-CMD python3 ~/bin/duetmonitor.py
+CMD python ~/bin/duetmonitor.py
