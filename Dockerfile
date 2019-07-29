@@ -4,6 +4,8 @@ MAINTAINER JasonX <jason@jasoncross.com>
 
 ADD duetmonitor.py /
 
+RUN pip install requests
+
 ENV DUET_HOSTNAME            duet.local
 ENV DUET_PASSWORD            reprap
 ENV SEND_IMAGE          false
