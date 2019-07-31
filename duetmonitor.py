@@ -173,28 +173,16 @@ def reloadConfig():
     config.read(['duetmonitor.cfg', os.path.expanduser('~/.duetmonitor.cfg')])
 
 def useLightForImage():
-    if [os.environ['USE_IMAGE_LIGHT'] == "true"]:
-        return True
-    else:
-        return False
+    return bool(distutils.util.strtobool(os.getenv('USE_IMAGE_LIGHT')))
 
 def useImage():
-    if [os.environ['SEND_IMAGE'] == "true"]:
-        return True
-    else:
-        return False
+    return bool(distutils.util.strtobool(os.getenv('SEND_IMAGE')))
 
 def useEnergyMonitor():
-    if [os.environ['USE_ENERGY_MONITOR'] == "true"]:
-        return True
-    else:
-        return False
+    return bool(distutils.util.strtobool(os.getenv('USE_ENERGY_MONITOR')))
 
 def writeStatistic():
-    if [os.environ['WRITE_STATISTIC'] == "true"]:
-        return True
-    else:
-        return False
+    return bool(distutils.util.strtobool(os.getenv('WRITE_STATISTIC')))
 
 def writeStatisticToFile(filename, start, end, duration, energy):
     print ("Write statistic to file called")
