@@ -175,13 +175,13 @@ def reloadConfig():
 def useLightForImage():
     if [os.environ['USE_IMAGE_LIGHT'] == "true"]:
         return True
-    else
+    else:
         return False
 
 def useImage():
     if [os.environ['SEND_IMAGE'] == "true"]:
         return True
-    else
+    else:
         return False
 
 def useEnergyMonitor():
