@@ -10,6 +10,7 @@ import requests
 import http.client
 import urllib
 import csv
+import distutils
 
 printimage = '/tmp/printimage.jpg'
 
