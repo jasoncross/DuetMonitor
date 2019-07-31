@@ -11,10 +11,12 @@ import http.client
 import urllib
 import csv
 import distutils
-
 from distutils import util
+import PIL
+from PIL import Image
 
 printimage = '/tmp/printimage.jpg'
+imagewidth = 640
 
 def main(argv):
     print('DuetMonitor started.')
@@ -106,6 +108,11 @@ def getImage():
         img_data = requests.get(os.environ['SNAPSHOT_URL']).content
         with open(printimage, 'wb') as handler:
             handler.write(img_data)
+        img = Image.open(printimage)
+        wpercent = (basewidth / float(img.size[0]))
+         hsize = int((float(img.size[1]) * float(wpercent)))
+         img = img.resize((basewidth, hsize), PIL.Image.ANTIALIAS)
+         img.save(printimage)
         files = {
             "attachment": ("printimage.jpg", open(printimage, "rb"), "image/jpeg")
         }
