@@ -5,7 +5,7 @@ MAINTAINER JasonX <jason@jasoncross.com>
 ADD duetmonitor.py /
 
 RUN pip install requests
-RUN pip install python-imaging
+RUN pip install Pillow
 
 ENV DUET_HOSTNAME            duet.local
 ENV DUET_PASSWORD            reprap
