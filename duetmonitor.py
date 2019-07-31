@@ -12,6 +12,8 @@ import urllib
 import csv
 import distutils
 
+from distutils import util
+
 printimage = '/tmp/printimage.jpg'
 
 def main(argv):
